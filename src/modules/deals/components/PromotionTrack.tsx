@@ -35,15 +35,34 @@ function savingsLine(savings: number, currency: string): string | null {
 export function PromotionTrack({
   promotion,
   dealCardId,
+  dealStatus,
 }: {
   promotion: PromotionView;
   dealCardId: string;
+  /**
+   * HEL-83: the card's own lifecycle status. A promotion may only be ACCEPTED
+   * while the deal is still `negotiation` — accepting inserts real
+   * `deal_line_item` rows, and doing that on a `done` deal makes its lines
+   * disagree with the invoice already issued against it. DECLINE stays
+   * available in every status on purpose: it changes nothing on the deal, and
+   * gating it would strand a pending promotion behind two refusing buttons
+   * with no way to clear it.
+   *
+   * The server is the real gate (`offer_promotion` / `accept_promotion`); this
+   * prop only keeps the UI from offering an action that would be refused.
+   */
+  dealStatus: string;
 }) {
   const [revealed, setRevealed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const savings = savingsLine(promotion.savings, promotion.currency);
+
+  // HEL-83, mirroring `accept_promotion`'s server gate exactly. Kept as one
+  // named constant rather than inlined so the rule reads once and there is no
+  // second place to forget it.
+  const canAccept = dealStatus === "negotiation";
 
   function refresh() {
     window.dispatchEvent(
@@ -160,14 +179,24 @@ export function PromotionTrack({
           >
             Decline
           </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => void run("accept")}
-            className="dc-btn-promo flex-1 rounded-full px-3 py-1.5 text-[12px] font-bold disabled:opacity-50"
-          >
-            {busy ? "Working…" : "Accept"}
-          </button>
+          {/* HEL-83: Accept is REMOVED, not disabled, once the deal has left
+              negotiation — the server refuses it, so rendering it would be a
+              dead button. Decline stays beside this so the buyer can always
+              clear the pending row. */}
+          {canAccept ? (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void run("accept")}
+              className="dc-btn-promo flex-1 rounded-full px-3 py-1.5 text-[12px] font-bold disabled:opacity-50"
+            >
+              {busy ? "Working…" : "Accept"}
+            </button>
+          ) : (
+            <p className="flex-1 text-[11px] leading-snug text-[color:var(--dc-ink-55)]">
+              This deal has moved on — the promotion can no longer be accepted.
+            </p>
+          )}
         </div>
       )}
     </div>

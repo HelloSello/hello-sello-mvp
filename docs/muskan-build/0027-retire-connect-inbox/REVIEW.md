@@ -867,5 +867,7 @@ ones, and with a fourth staged all four badges have now been seen in Chromium.
 
 **Staged, not judged.** No verdict is passed here. Rows 12, 18, 20, 22 and 23
 are what G4 exists to put in front of Muskan; rows 22 and 23 in particular are
-page-shell behaviour that predates this ticket and may belong in a separate
-doubt rather than in T04.
+page-shell behaviour that predates this ticket. **Ruled 2026-09-06:** filed as
+[HEL-92](https://linear.app/hellosello/issue/HEL-92) (Codebase Development
+Tickets); the accent-colour question (row 12) was ruled the same day —
+`connect_message`/`person` stay the same blue, no code change.

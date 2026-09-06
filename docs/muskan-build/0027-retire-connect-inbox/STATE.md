@@ -179,9 +179,10 @@ before D2's app code. ADR §6 supersedes `PRD:61`, which states the reverse.
 - **G4: Muskan reviewed the staged screenshots and passed.** The two
   side-questions raised at the gate (distinct accent colour for
   `connect_message`/`person`; whether the 768px/390px bug becomes a
-  `/track-doubt`) were **not explicitly ruled on** — "pass" closed the
-  ticket itself, both side-questions are still open, not decided either
-  way.
+  ticket) were **not explicitly ruled on** at the gate itself — "pass"
+  closed the ticket, both side-questions stayed open until 2026-09-06,
+  when Muskan ruled both: badges stay the same blue, and the bug is
+  filed as [HEL-92](https://linear.app/hellosello/issue/HEL-92).
 
 ### T03 — Discover's Requests list carries pricelist requests
 - Plan written: `PLAN-T03.md`. `plan-checker` round 1: REVISE (1 blocking —
@@ -324,7 +325,9 @@ before D2's app code. ADR §6 supersedes `PRD:61`, which states the reverse.
   way. `tests 0/2`, `blocking-findings 0/2` — closed clean, no retries
   spent. **Ruled 2026-09-06:** `connect_message`/`person` badges stay
   the same blue, no distinct accent — Muskan's call, no code change
-  needed. The 768px/390px bug's `/track-doubt` question is still open.
+  needed. The 768px/390px bug filed as
+  [HEL-92](https://linear.app/hellosello/issue/HEL-92) (Codebase
+  Development Tickets).
   → stage advances to T05 (W3, depends on T01 — live).
 - 2026-09-04 — **G4 T05 — auto (backend-only, no human stop, PIPELINE
   §3).** `plan-checker` round 1: 1 blocking (a broken EARS-3 fixture

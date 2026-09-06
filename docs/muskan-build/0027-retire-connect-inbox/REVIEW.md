@@ -679,8 +679,8 @@ findings about already-shipped tickets, not new T05 gaps.**
     already-documented NULL-guard bypass (T01 REVIEW.md notes 1/5/7).
     Unchanged by T01's diff (which only deletes the trailing `else`
     branch) or by anything in this slug. **Not fixed here — out of
-    T05's scope, needs its own `/track-doubt` alongside the already-
-    flagged NULL-guard issue.**
+    T05's scope. Filed as [HEL-89](https://linear.app/hellosello/issue/HEL-89)
+    (Codebase Development Tickets), 2026-09-06.**
 11. **(code-review, same file:87, pre-existing, already on record)**
     Re-discovery of the NULL-blind participant guard already documented
     in T01's REVIEW.md notes 1/5/7 and STATE.md's "For Muskan" section.
@@ -695,7 +695,8 @@ findings about already-shipped tickets, not new T05 gaps.**
     second chat message") under concurrency, which T02's sequential SQL
     suite would not have caught. **Genuinely new, not a re-discovery —
     T02 is already merged and G4-approved, so this isn't T05's fix to
-    make. Needs a ruling: a follow-up ticket, or `/track-doubt`.**
+    make. Filed as [HEL-90](https://linear.app/hellosello/issue/HEL-90)
+    (Codebase Development Tickets), 2026-09-06.**
 13. **(code-review, `src/app/discover/requestTypeMeta.ts:7`, already
     decided, not a gap)** Flagged as duplicating
     `inbox-display.ts`'s `REQUEST_TYPE_META` instead of reusing it. This
@@ -749,8 +750,9 @@ findings about already-shipped tickets, not new T05 gaps.**
     soft-deleted request appears to grant person-visibility permanently.
     Pre-existing, untouched by this ticket, unaffected by the backfill
     either way (T05 doesn't change which rows exist, only `deal_card`
-    rows' status, and this predicate doesn't filter on `type` either) —
-    worth its own `/track-doubt`, not fixed here.
+    rows' status, and this predicate doesn't filter on `type` either).
+    **Filed as [HEL-91](https://linear.app/hellosello/issue/HEL-91)
+    (Codebase Development Tickets), 2026-09-06.**
 
 ### Verification replay (backend-only ticket — no G4 human stop per PIPELINE §3)
 
@@ -772,15 +774,18 @@ findings about already-shipped tickets, not new T05 gaps.**
   tests + all three reviews + independent re-verification, no human G4
   stop.**
 
-**Three findings surfaced during this round that are NOT T05's to fix, all
-need your ruling, none block this ticket:** (a) a new info-disclosure
-angle in `confirm_detected_deal` — pre-existing, unchanged by this slug —
-alongside the already-known NULL-guard bypass; (b) a genuine TOCTOU dedup
-race in T02's already-shipped `request_product_pricing_c2c`, violating a
-locked invariant (I-M13) under concurrency; (c) `shares_connection_with_company`
-grants person-visibility with no `status`/`deleted_at` filter, found by
-`security`'s re-check sweep, unrelated to T05's own diff. All three are
-`/track-doubt` candidates — see notes 10, 12, and 20 above.
+**Three findings surfaced during this round that were NOT T05's to fix — all
+filed 2026-09-06 to Linear team "Codebase Development Tickets" (not
+`/track-doubt`, which is scoped to LAYER-*.md product doubts; these are
+engineering findings with no product-doc home):** (a)
+[HEL-89](https://linear.app/hellosello/issue/HEL-89) — the
+`confirm_detected_deal` info-disclosure angle, alongside the already-known
+NULL-guard bypass; (b) [HEL-90](https://linear.app/hellosello/issue/HEL-90) —
+the TOCTOU dedup race in T02's already-shipped `request_product_pricing_c2c`,
+violating locked invariant I-M13 under concurrency; (c)
+[HEL-91](https://linear.app/hellosello/issue/HEL-91) —
+`shares_connection_with_company` granting person-visibility with no
+`status`/`deleted_at` filter. See notes 10, 12, and 20 above for full detail.
 
 ### G4 visual staging (`visual-verifier`) — evidence for Muskan's look
 

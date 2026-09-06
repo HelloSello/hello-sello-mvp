@@ -320,8 +320,11 @@ before D2's app code. ADR §6 supersedes `PRD:61`, which states the reverse.
   half). Muskan reviewed the staged screenshots and passed. Two side
   questions raised at the gate (accent-colour distinction; whether the
   768px/390px pre-existing clipping bug becomes a `/track-doubt`) were
-  **not ruled on** — recorded as still open, not decided either way.
-  `tests 0/2`, `blocking-findings 0/2` — closed clean, no retries spent.
+  **not ruled on at G4** — recorded as still open, not decided either
+  way. `tests 0/2`, `blocking-findings 0/2` — closed clean, no retries
+  spent. **Ruled 2026-09-06:** `connect_message`/`person` badges stay
+  the same blue, no distinct accent — Muskan's call, no code change
+  needed. The 768px/390px bug's `/track-doubt` question is still open.
   → stage advances to T05 (W3, depends on T01 — live).
 - 2026-09-04 — **G4 T05 — auto (backend-only, no human stop, PIPELINE
   §3).** `plan-checker` round 1: 1 blocking (a broken EARS-3 fixture
@@ -377,17 +380,21 @@ found that you did not already know.**
   sanctioned route gates to p2p. And `deal_workspace.visibility` is client-updatable under
   `ws_all`, so a party can flip a workspace to `private` and lock the counterparty out — after
   the DROP there is no recovery path. Both belong in `/track-doubt`.
-- ⚠️ **Three more found during T05's build, none filed, none blocking T05:** (a)
-  `confirm_detected_deal`'s idempotent "already born" early-return (`20260903120000_…sql:79`)
-  runs BEFORE the participant guard — any authenticated caller who obtains a `deal_detected`
-  message id can read back its `deal_card_id` for a deal they have no relationship to. Distinct
-  from the already-known NULL-guard bypass on the same function. Pre-existing, unchanged by
-  anything in this slug. (b) A genuine race in T02's `request_product_pricing_c2c` (already
-  shipped, G4-approved): the dup-guard's `EXISTS`-then-`INSERT` has no unique constraint or lock
-  between them, so a double-click or retried request can produce two identical chat messages —
-  violates locked invariant I-M13 under concurrency, which T02's sequential SQL suite couldn't
-  have caught. This one needs a decision (follow-up ticket vs. `/track-doubt`), not just a note,
-  since it's a real regression against a signed invariant. (c) `shares_connection_with_company`
-  has no `status`/`deleted_at` filter on `pending_inbox_item` — a rejected or soft-deleted
+- ✅ **Three more found during T05's build — filed 2026-09-06** to Linear team "Codebase
+  Development Tickets" (not `/track-doubt`, which is scoped to LAYER-*.md product doubts and has
+  no home for engineering findings tied to code files, not docs). (a)
+  [HEL-89](https://linear.app/hellosello/issue/HEL-89) — `confirm_detected_deal`'s idempotent
+  "already born" early-return (`20260903120000_…sql:79`) runs BEFORE the participant guard — any
+  authenticated caller who obtains a `deal_detected` message id can read back its `deal_card_id`
+  for a deal they have no relationship to. Distinct from the already-known NULL-guard bypass on
+  the same function. Pre-existing, unchanged by anything in this slug. (b)
+  [HEL-90](https://linear.app/hellosello/issue/HEL-90) — a genuine race in T02's
+  `request_product_pricing_c2c` (already shipped, G4-approved): the dup-guard's
+  `EXISTS`-then-`INSERT` has no unique constraint or lock between them, so a double-click or
+  retried request can produce two identical chat messages — violates locked invariant I-M13 under
+  concurrency, which T02's sequential SQL suite couldn't have caught. A real regression against a
+  signed invariant, not just a note. (c) [HEL-91](https://linear.app/hellosello/issue/HEL-91) —
+  `shares_connection_with_company` has no `status`/`deleted_at` filter on `pending_inbox_item` —
+  a rejected or soft-deleted
   request appears to grant person-visibility permanently. Pre-existing, unrelated to this slug.
   Full detail on all three: `REVIEW.md`'s T05 section, notes 10/12/20.

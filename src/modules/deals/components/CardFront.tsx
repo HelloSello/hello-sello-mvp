@@ -1295,7 +1295,7 @@ export function CardFront({
             {/* the yellow promotion track (D-21..D-26) - never gates Sign */}
             {!editMode && promotion && (
               <div className="mt-3">
-                <PromotionTrack promotion={promotion} dealCardId={cardId} />
+                <PromotionTrack promotion={promotion} dealCardId={cardId} dealStatus={card.status} />
               </div>
             )}
 
